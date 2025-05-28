@@ -1,0 +1,231 @@
+openapi: 3.0.0
+info:
+  title: Magical Tsutsun List
+  description: API de librería de animes y mangas.
+  version: 1.0.0
+paths:
+  /magicaltsutsunlist/v1/sync-and-insert-manga:
+    get:
+      summary: Se sincronizan los datos de manga y se insertan en la base de datos de MySQL.
+      description: Se conecta a la base de datos de MySQL, se sincroniza y después se insertan los datos de los mangas.
+      tags:
+        - Mangas
+      responses:
+        200:
+          description: Mangas sincronizados e insertados con éxito.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 'Datos sincronizados e insertados.'
+        500:
+          description: Error al sincronizar e insertar los mangas.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 'Error al sincronizar e insertar los mangas.'
+
+  /magicaltsutsunlist/v1/collections/mangas:
+    get:
+      summary: Se obtiene la información de todos los mangas almacenados en la base de datos de MongoDB.
+      tags:
+        - Mangas
+      responses:
+        200:
+          description: Listado de todos los mangas.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      example: "67bb9f278732e96514be324e"
+                    title:
+                      type: string
+                      example: "Bouken Ou Beet"
+                    synopsis:
+                      type: string
+                      example: "It is the dark century and the people are suffering under the rule of the devil, Vandel, who is able to manipulate monsters..."
+                    genres:
+                      type: array
+                      items:
+                        type: string
+                      example: [ "Action", "Adventure", "Fantasy" ]
+                    image:
+                      type: string
+                      example: "https://cdn.myanimelist.net/images/manga/7/21569l.jpg"
+        500:
+          description: Error interno del servidor.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 'Internal Server Error'
+
+  /magicaltsutsunlist/v1/user/manga-status/add:
+    post:
+      summary: Se añade o actualiza el estado de un manga en la lista personal del usuario.
+      description: Esta ruta permite agregar o actualizar el estado de un manga en la lista personal de un usuario. Si el estado es "Drop", el manga será eliminado de la lista.
+      tags:
+        - Mangas
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mangaData:
+                  type: object
+                  description: Datos del manga que se va a añadir o actualizar en la lista.
+                  example: { "_id": "67cc1f4b7350eac8e9842104", "title": "Ojamajo Doremi" }
+                status:
+                  type: string
+                  description: El estado del manga en la lista del usuario ("Watching", "Completed", "Drop"...).
+                  example: "Watching"
+      responses:
+        201:
+          description: Manga añadido/actualizado con éxito.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Manga successfully added/updated."
+                  manga:
+                    type: object
+                    description: Datos del manga actualizado.
+                    example: { "_id": "67cc1f4b7350eac8e9842104", "title": "Ojamajo Doremi", "status": "Completed"}
+        500:
+          description: Error al añadir manga.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error adding manga."
+                  error:
+                    type: object
+                    description: Detalles del error.
+                    example: { "message": "Error adding manga.", "code": "500" }
+
+  /magicaltsutsunlist/v1/user/manga-status/list:
+    get:
+      summary: Se obtiene la lista personal de mangas de un usuario.
+      description: Esta ruta devuelve la lista de mangas del usuario autenticado.
+      tags:
+        - Mangas
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: Lista de mangas del usuario.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    mangaId:
+                      type: string
+                      description: ID del manga.
+                      example: "67cc1f4b7350eac8e9842104"
+                    title:
+                      type: string
+                      description: Título del manga.
+                      example: "Ojamajo Doremi"
+                    synopsis:
+                      type: string
+                      description: Sinopsis del manga.
+                      example: "Harukaze Doremi considers herself to be the unluckiest girl in the world..."
+                    image:
+                      type: string
+                      description: URL de la imagen del manga o ruta relativa de la imagen local.
+                      example: "/uploads/mangas/manga1.jpg"
+                    genres:
+                      type: array
+                      description: Género o géneros del manga.
+                      items:
+                        type: string
+                      example: [ "Comedy", "Fantasy" ]
+                    status:
+                      type: string
+                      description: Estado del manga en la lista.
+                      example: "Watching"
+        500:
+          description: Error al obtener la lista.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error fetching the list."
+                  error:
+                    type: object
+                    description: Detalles del error.
+                    example: { "message": "Internal server error.", "code": "500" }
+
+  /magicaltsutsunlist/v1/user/manga-status/{mangaId}:
+    delete:
+      summary: Eliminar un manga de la lista personal del usuario.
+      description: Esta ruta elimina un manga de la lista personal del usuario utilizando el ID del manga.
+      tags:
+        - Mangas
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: mangaId
+          required: true
+          description: ID del manga que se va a eliminar de la lista.
+          schema:
+            type: string
+            example: "67bb9f278732e96514be3257"
+      responses:
+        200:
+          description: Manga eliminado con éxito.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Manga successfully deleted."
+        404:
+          description: Manga no encontrado en la lista.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Manga not found in the list."
+        500:
+          description: Error al eliminar manga.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error deleting manga."
+                  error:
+                    type: object
+                    description: Detalles del error.
+                    example: { "message": "Internal server error", "code": "500" }

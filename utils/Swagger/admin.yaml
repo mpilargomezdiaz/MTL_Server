@@ -1,0 +1,235 @@
+openapi: 3.0.0
+info:
+  title: Magical Tsutsun List
+  description: API de librería de animes y mangas.
+  version: 1.0.0
+
+paths:
+  /magicaltsutsunlist/v1/admin/anime-image/upload:
+    post:
+      summary: Subir una imagen de anime.
+      description: Esta ruta permite al administrador subir una imagen relacionada con un anime. La imagen será almacenada en el servidor.
+      tags:
+        - Admin
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: Imagen del anime a subir.
+      responses:
+        200:
+          description: Imagen subida con éxito.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Image uploaded successfully."
+                  filePath:
+                    type: string
+                    example: "/uploads/animes/imagenAnime.jpg"
+        500:
+          description: Error al subir la imagen.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error uploading the image."
+                  error:
+                    type: string
+                    example: "Server error"
+
+  /magicaltsutsunlist/v1/admin/new-anime/upload:
+    post:
+      summary: Subir un nuevo anime a la base de datos de MongoDB.
+      description: Esta ruta permite al administrador agregar un nuevo anime a la base de datos MongoDB.
+      tags:
+        - Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Título del anime.
+                  example: "Ojamajo Doremi"
+                synopsis:
+                  type: string
+                  description: Sinopsis del anime.
+                  example: "Harukaze Doremi considers herself to be the unluckiest girl in the world..."
+                genres:
+                  type: array
+                  items:
+                    type: string
+                  example: ["Action", "Adventure", "Fantasy"]
+                image:
+                  type: string
+                  description: URL de la imagen asociada con el anime.
+                  example: "/uploads/animes/anime2.jpg"
+      responses:
+        201:
+          description: Anime añadido con éxito.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Anime added successfully."
+        500:
+          description: Error al guardar el anime.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error saving the anime."
+                  error:
+                    type: string
+                    example: "Database error"
+
+  /magicaltsutsunlist/v1/admin/manga-image/upload:
+    post:
+      summary: Subir una imagen de manga.
+      description: Esta ruta permite al administrador subir una imagen relacionada con un manga. La imagen será almacenada en el servidor.
+      tags:
+        - Admin
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: Imagen del manga a subir.
+      responses:
+        200:
+          description: Imagen subida con éxito.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Imagen subida con éxito"
+                  filePath:
+                    type: string
+                    example: "/uploads/mangas/imagenManga.jpg"
+        500:
+          description: Error al subir la imagen.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error al subir la imagen."
+                  error:
+                    type: string
+                    example: "Error específico"
+
+  /magicaltsutsunlist/v1/admin/new-manga/upload:
+    post:
+      summary: Subir un nuevo manga a la base de datos de MongoDB.
+      description: Esta ruta permite al administrador agregar un nuevo manga a la base de datos MongoDB.
+      tags:
+        - Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Título del manga.
+                  example: "Ojamajo Doremi"
+                synopsis:
+                  type: string
+                  description: Sinopsis del manga.
+                  example: "Harukaze Doremi considers herself to be the unluckiest girl in the world..."
+                genres:
+                  type: array
+                  items:
+                    type: string
+                  example: ["Action", "Adventure", "Fantasy"]
+                image:
+                  type: string
+                  description: URL de la imagen asociada con el manga.
+                  example: "/uploads/mangas/manga2.jpg"
+      responses:
+        201:
+          description: Manga añadido con éxito.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Manga added successfully."
+        500:
+          description: Error al guardar el manga.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error saving the manga."
+                  error:
+                    type: string
+                    example: "Database error"
+
+  /role:
+    get:
+      summary: Obtiene el rol del usuario autenticado.
+      description: Devuelve el rol del usuario basado en el token de autenticación.
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Rol del usuario obtenido correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  role:
+                    type: string
+                    example: "super-otaku"
+        401:
+          description: No autorizado, token inválido o ausente.
+        500:
+          description: Error interno del servidor.
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

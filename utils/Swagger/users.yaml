@@ -1,0 +1,193 @@
+openapi: 3.0.0
+info:
+  title: Magical Tsutsun List
+  description: API de librería de animes y mangas.
+  version: 1.0.0
+paths:
+  /magicaltsutsunlist/v1/user/signup:
+    post:
+      summary: Registra un nuevo usuario en la base de datos.
+      description: Crea un nuevo usuario con los datos proporcionados (nombre de usuario, email, contraseña, rol).
+      tags: 
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Nombre de usuario para el nuevo usuario.
+                email:
+                  type: string
+                  description: Correo electrónico del nuevo usuario.
+                pass:
+                  type: string
+                  description: Contraseña para el nuevo usuario.
+                role:
+                  type: string
+                  description: Rol asignado al nuevo usuario.
+      responses:
+        201:
+          description: Nuevo usuario registrado con éxito.
+        501:
+          description: El usuario ya existe.
+        500:
+          description: Error al registrar el usuario.
+
+  /magicaltsutsunlist/v1/user/login:
+    post:
+      tags: 
+        - Users
+      summary: Inicio de sesión del usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - login
+                - password
+              properties:
+                login:
+                  type: string
+                  description: Hace referencia al username o al email.
+                  example: "Tsutsun7" # o "tsutsun@gmail.com"
+                password:
+                  type: string
+                  description: Contraseña del usuario
+                  example: "TsutsunPass"
+      responses:
+        '202':
+          description: Usuario autenticado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "---- User logged in successfully. ------"
+                  token:
+                    type: string
+                    example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '404':
+          description: Error en la solicitud
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid username and/or password."
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Server error."
+
+  /magicaltsutsunlist/v1/user/update-pass:
+    post:
+      tags: 
+        - Users
+      summary: Actualizar la contraseña del usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "tsutsun@gmail.com"
+      responses:
+        '200':
+          description: Contraseña actualizada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User found. Here is the token to reset the password."
+                  token:
+                    type: string
+                    example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+        '404':
+          description: Error en la solicitud
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "The email field is required."
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error"
+                  error:
+                    type: object
+                    example: "{}"
+
+  /magicaltsutsunlist/v1/user/confirm-pass/{token}:
+    post:
+      tags:
+        - Users
+      summary: Confirmar la contraseña del usuario
+      parameters:
+        - in: path
+          name: token
+          required: true
+          schema:
+            type: string
+          description: Token para confirmación de contraseña
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pass:
+                  type: string
+                  example: "newtsutsunpassword"
+      responses:
+        '200':
+          description: Contraseña confirmada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Password updated successfully."
+        '500':
+          description: Error al validar el token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error"
