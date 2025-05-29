@@ -124,16 +124,17 @@ node test/testSignUp.js
 
 ---
 
-## 📄 License
+## 📄 Licencia
 
-This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) License. See the [LICENSE](./LICENSE) file for details.
+Este proyecto está licenciado bajo la licencia Creative Commons Atribución-NoComercial 4.0 Internacional (CC BY-NC 4.0). Consulta el archivo [LICENSE](./LICENSE) para más detalles.
 
-You can freely use, copy, and modify this code for non-commercial purposes, but commercial use is not permitted.
+Puedes usar, copiar y modificar este código libremente para fines **no comerciales**, siempre que se mantenga la atribución correspondiente. **No está permitido su uso comercial**.
 
 ---
 
-## 📢 Legal Notice
+## 📢 Aviso legal
 
-This project uses data and images from MyAnimeList exclusively for educational and portfolio purposes.
+Este proyecto utiliza datos e imágenes obtenidos de la plataforma MyAnimeList con fines exclusivamente educativos y como parte de mi portfolio personal.
 
-It is not affiliated with MyAnimeList or the content owners. All rights to names, images, and descriptions belong to their respective owners.
+No tiene ninguna finalidad comercial ni está afiliado oficialmente con MyAnimeList ni con los propietarios de los contenidos utilizados. Todos los derechos sobre nombres, imágenes y descripciones pertenecen a sus respectivos autores o licenciatarios.
+
