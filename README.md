@@ -121,3 +121,19 @@ Accede a la documentación Swagger desde:
 node test/testSignUp.js
 
 ```
+
+---
+
+## 📄 License
+
+This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) License. See the [LICENSE](./LICENSE) file for details.
+
+You can freely use, copy, and modify this code for non-commercial purposes, but commercial use is not permitted.
+
+---
+
+## 📢 Legal Notice
+
+This project uses data and images from MyAnimeList exclusively for educational and portfolio purposes.
+
+It is not affiliated with MyAnimeList or the content owners. All rights to names, images, and descriptions belong to their respective owners.
