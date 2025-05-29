@@ -147,7 +147,7 @@ export async function updatePass(req, res) {
                         </p>
                         <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
                         <p style="font-size: 12px; color: #aaa; text-align: center;">
-                            &copy; ${new Date().getFullYear()} YourKawaiiApp. All rights reserved.
+                            &copy; ${new Date().getFullYear()} MagicalTsutsunList. All rights reserved.
                         </p>
                     </div>
                 </div>
